@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CoolProp Javascript example</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+//<link rel="stylesheet" href="/resources/demos/style.css" />
+</script>
+
+<script src="coolprop.js"></script>
+<!-- script src="coolprop.js"></script -->
+</head>
+
+<body>
+	<input type="button" id="output", value="Click"/>
+    <script type="text/javascript">
+    	var test = document.getElementById('output');
+    	test.addEventListener('click', function() {
+    		var name = "R134a";
+        	var key1 = "P";
+        	var key2 = "T";
+        	var val1 = 100000;
+        	var val2 = 373;
+
+	        var h = Module.PropsSI('H', key1, val1, key2, val2, name);
+
+    	    document.write(h);
+    	})
+    </script>
+
+</body>
+
+</html>
