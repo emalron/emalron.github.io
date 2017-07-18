@@ -1,1 +1,204 @@
-did you see me?
+<html>
+    <head>
+        <!-- sematic ui script -->
+        <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+        <script
+          src="https://code.jquery.com/jquery-3.1.1.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+          crossorigin="anonymous"></script>
+        <script src="semantic/semantic.min.js"></script>
+        <!-- semantic-ui: dropdown script -->
+        <script>
+            $(document)
+                .ready(function () {
+                $('.ui.dropdown')
+                    .dropdown({
+                    on: 'click'
+                });
+            });
+        </script>
+        
+        <!-- coolprop script -->
+        <script src="coolprop.js"></script>
+    </head>
+    
+    <body>
+        <div class="ui grid container">
+            <div class="row">
+                <div class="column">
+                    <h1 class="ui header">My first page</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="ui message">
+                        <h1  class="ui header">Hello, world!</h1>
+                        <p>
+                            I made thi  s page using Semantic-UI. you can calculate theromynamic properties of R134a, Coolprop was employed.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="ui message">
+                        <div class="ui labeled input">
+                            <div class="ui dropdown label" id="material">
+                                <div class="text">Material</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item">R410A</div>
+                                    <div class="item">R22</div>
+                                    <div class="item">R134A</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui labeled input" id="1st">
+                            <div class="ui dropdown label" id="1stdrop">
+                                <div class="text">Property</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item">Pressure</div>
+                                    <div class="item">Temperature</div>
+                                    <div class="item">Enthalpy</div>
+                                    <div class="item">Entropy</div>
+                                    <div class="item">Quality</div>
+                                </div>
+                            </div>
+                            <input type="text" placeholder="1st property" id="input1">
+                        </div>
+                        <div class="ui labeled input" id="2nd">
+                            <div class="ui dropdown label" id="2nddrop">
+                                <div class="text">Property</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu" >
+                                    <div class="item">Pressure</div>
+                                    <div class="item">Temperature</div>
+                                    <div class="item">Enthalpy</div>
+                                    <div class="item">Entropy</div>
+                                    <div class="item">Quality</div>
+                                </div>
+                            </div>
+                            <input type="text" placeholder="2nd property" id=input2>
+                        </div>
+                        <div class="ui basic button" id="calculate">
+                            button!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="ui message" id="output">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- script -->
+        <script>
+            $("#2nddrop").click(function() {
+                var name = $(this).dropdown('get text');
+                var you = $("#1stdrop").dropdown('get text');
+                
+                if (name == 'Pressure') {
+                    $("#input2").attr("placeholder","in Pa")
+                }
+                else if (name == 'Temperature') {
+                    $('#input2').attr("placeholder", "in K")
+                }
+                else if (name == 'Quality') {
+                    $('#input2').attr("placeholder", "0 to 1")
+                }
+                else if (name == 'Enthalpy') {
+                    $('#input2').attr("placeholder", "in J/kg")
+                }
+                else if (name == 'Entropy') {
+                    $('#input2').attr("placeholder", "in J/K/kg")
+                }
+            });
+            
+            $("#1stdrop").click(function() {
+                var name = $(this).dropdown('get text');
+                    
+                if (name == 'Pressure') {
+                    $("#input1").attr("placeholder","in Pa")
+                }
+                else if (name == 'Temperature') {
+                    $('#input1').attr("placeholder", "in K")
+                }
+                else if (name == 'Quality') {
+                    $('#input1').attr("placeholder", "0 to 1")
+                }
+                else if (name == 'Enthalpy') {
+                    $('#input1').attr("placeholder", "in J/kg")
+                }
+                else if (name == 'Entropy') {
+                    $('#input1').attr("placeholder", "in J/K/kg")
+                }
+            });
+            
+            $("#calculate").click(function() {
+                var a = $("#material").dropdown('get text')
+                var b = $("#1stdrop").dropdown('get text')
+                var c = $("#2nddrop").dropdown('get text')
+                
+                if (a != "Material" && b !== "Property" && c !== "Property") {
+                    if (b !== c) {
+                        var name = $("#material").dropdown('get text');
+                        var key1 = getKey(b)
+                        var input1 = parseFloat($("#input1").val())
+                        var key2 = getKey(c)
+                        var input2 = parseFloat($("#input2").val())
+                        
+                        var T = Module.PropsSI('T', key1, input1, key2, input2, name)
+                        var P = Module.PropsSI('P', key1, input1, key2, input2, name)
+                        var Q = Module.PropsSI('Q', key1, input1, key2, input2, name)
+                        var S = Module.PropsSI('S', key1, input1, key2, input2, name)
+                        var H = Module.PropsSI('H', key1, input1, key2, input2, name)
+                        
+                        text = ''
+                        text += 'T= ' + T + ' K\n' + '<br>'
+                        text += 'P= ' + P + ' Pa' + '<br>'
+                        text += 'Q= ' + Q + '<br>'
+                        text += 'S= ' + S + ' J/kg/K' + '<br>'
+                        text += 'H= ' + H + ' J/kg' + '<br>'
+                        $("#output").attr('class', 'ui message').html(text)
+                    }
+                    else {
+                        $("#output").attr('class', 'ui red message').text("1st and 2nd properties have to be different.")
+                    }
+                }
+                else {
+                    $("#output").attr('class', 'ui red message').text("Insert information.")
+                }
+            });
+            
+            
+            function getKey(something) {
+                if(something == 'Pressure') {
+                    return 'P';
+                }
+                else if (something == 'Temperature') {
+                    return 'T';
+                }
+                else if (something == 'Quality') {
+                    return 'Q';
+                }
+                else if (something == 'Enthalpy') {
+                    return 'H';
+                }
+                else if (something == 'Entropy') {
+                    return 'S';
+                }
+            }
+            
+            function checker(me, you) {
+                if (me == you) {
+                    return false;
+                }
+                return true;
+            }
+        </script>
+    </body>
+</html>    
