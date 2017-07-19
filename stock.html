@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <!-- sematic ui script -->
+        <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+        <script
+          src="https://code.jquery.com/jquery-3.1.1.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+          crossorigin="anonymous"></script>
+        <script src="semantic/semantic.min.js"></script>
+        <!-- semantic-ui: dropdown script -->
+        <script>
+            $(document)
+                .ready(function () {
+                $('.ui.dropdown')
+                    .dropdown({
+                    on: 'click'
+                });
+            });
+        </script>
+        <!-- google chart -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+        </script>
+        <!-- my tools -->
+        <script type="text/javascript" src="js/mytools.js"></script>
+    </head>
+    <body>
+        <div class="ui grid container">
+            <div class="row">
+                <div class="column">
+                    <div id="c_chart" style='width: 990px; height:500px'></div>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='column'>
+                    <div class="ui button" id="action">Draw chart!</div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            $('#action').click(function() {
+                var businessDays = 200.0;
+                var howmanycompanies = 5;
+                var volUB = 12.0/businessDays;
+                
+                var simpleMarket = new SimpleMarket();
+                simpleMarket.init(howmanycompanies,volUB);
+                
+                var prices=[];
+                for(var i=0; i<businessDays;i++) {
+                    prices.push(simpleMarket.move(1.1/businessDays));
+                }
+                
+                var data = new google.visualization.DataTable();
+                // add columns
+                data.addColumn('number', 'days')
+                data.addColumn('number', 'A company')
+                data.addColumn('number', 'B company')
+                
+                // add empty rows
+                data.addRows(businessDays);
+                
+                for(var i=0;i<businessDays;i++) {
+                    data.setCell(i,0,i);
+                    data.setCell(i,1,prices[i][0])
+                    data.setCell(i,2,prices[i][1])
+                }
+                
+//                var compani = createArray(1,2);
+//                compani[0][0] = 'days';
+//                compani[0][1] = 'company';
+//                
+//                for(var i=0;i<businessDays;i++) {
+//                    compani.push([i, prices[i][0]])
+//                }
+//                
+//                var data = google.visualization.arrayToDataTable(compani,false);
+            
+                var options = {
+                    title: 'Company Performance',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+        
+                var chart = new google.visualization.LineChart(document.getElementById('c_chart'));
+                chart.draw(data, options);
+            })
+        </script>
+    </body>
+</html>
