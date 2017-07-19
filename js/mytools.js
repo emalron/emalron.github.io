@@ -39,6 +39,7 @@ function Company () {
     this.price = 0.0;
     this.history = [];
     this.vol = 0.0
+    this.lastInfluence = 0.0;
 }
 Company.prototype.init = function(_price, _volUB) {
     this.price = _price
@@ -57,7 +58,14 @@ Company.prototype.makeMove = function(bias, mo) {
 //    console.log('this.price @makeMove: ' + this.price)
     var baseMove = gauss()*this.vol + bias
     var _price = oldPrice + baseMove;
-    _price += mo;
+    _price += mo*choice([0,1])*this.lastInfluence;
+    
+    var change = _price - oldPrice;
+    if (change >= 0) {
+        this.lastInfluence = Math.min(change, oldPrice*0.1)
+    } else {
+        this.lastInfluence = Math.max(change,-oldPrice*0.1)
+    }
 //    console.log('_price @makeMove: ' + _price)
     this.setPrice(_price)
 //    console.log('final price @makeMove: ' + this.price)
@@ -113,3 +121,10 @@ function Market(SimpleMarket) {
 }
 
 // Class simMkt
+
+
+// random choice
+function choice(choices) {
+    var index = Math.floor(Math.random() * choices.length)
+    return choices[index]
+}
