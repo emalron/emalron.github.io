@@ -34,6 +34,10 @@
             </div>
             <div class='row'>
                 <div class='column'>
+                    <div class="ui input">
+                        <input type="text" placeholder="Volatility" id="vol">
+                        <input type="text" placeholder="Momentum" id="momentum">
+                    </div>
                     <div class="ui button" id="action">Draw chart!</div>
                 </div>
             </div>
@@ -43,14 +47,27 @@
             $('#action').click(function() {
                 var businessDays = 200.0;
                 var howmanycompanies = 5;
-                var volUB = 12.0/businessDays;
+                if(!$("#momentum").val()) $("#momentum").val(0.0);
+                if(!$("#vol").val()) $("#vol").val(3000.0);
+                var mo = parseFloat($("#momentum").val())
+                var volUB = parseFloat($("#vol").val())/businessDays;
+                
+                var choices = [0, 1]
+                
+                var choice = function(choices) {
+                    var index = Math.floor(Math.random() * choices.length)
+                    return choices[index]
+                }
+                
+                console.log(choice(choices))
                 
                 var simpleMarket = new SimpleMarket();
                 simpleMarket.init(howmanycompanies,volUB);
                 
                 var prices=[];
+                
                 for(var i=0; i<businessDays;i++) {
-                    prices.push(simpleMarket.move(1.1/businessDays));
+                    prices.push(simpleMarket.move(mo/businessDays));
                 }
                 
                 var data = new google.visualization.DataTable();
