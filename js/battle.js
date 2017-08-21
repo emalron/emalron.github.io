@@ -44,10 +44,10 @@ Arena.prototype.duel = function(me, you) {
     }
     
     if(this.isFatal(me)) {
-        this.msg.push(me.getName() + " was slain<br>");
+        this.msg.push("<font color=red>" + me.getName() + " was slain</font><br>");
     }
     if(this.isFatal(you)) {
-        this.msg.push(you.getName() + " was slain<br>");
+        this.msg.push("<font color=red>" + you.getName() + " was slain</font><br>");
     }
 }
 Arena.prototype.attack = function(attacker, defender) {
