@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <!-- sematic ui script -->
+        <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+        <script
+          src="https://code.jquery.com/jquery-3.1.1.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+          crossorigin="anonymous"></script>
+        <script src="semantic/semantic.min.js"></script>
+        <script src="js/battle.js"></script>
+        <!-- google chart -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+        </script>
+        <!-- my tools -->
+        <script type="text/javascript" src="js/mytools.js"></script>
+    </head>
+    <body>
+        <div class="ui grid container">
+            <div class="row">
+                <div class="column">
+                    <h1 class="ui header" id="tex1">Battle simulation</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column" style='width: 200px'>
+                    <h2 class ="ui header" id="player1name"></h2>
+                    <p id="player1stat"></p>
+                </div>
+                <div class="column" style='width: 200px'>
+                    <h2 class ="ui header" id="player2name"></h2>
+                    <p id="player2stat"></p>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='column'>
+                    <div class="ui button" id="action">Fight!</div>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='column'>
+                    <div class="ui message" id="combat"></div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var arena = new Arena();
+            
+            $(document).ready(function() {    
+                var _name1 = arena.aaron.getName();
+                var _name2 = arena.das.getName();
+                $('#player1name').html(_name1);
+                $('#player2name').html(_name2);
+                        
+                var _stat1 = "HP: " + arena.aaron.getHealth() + "<br>";
+                _stat1 += "AT: " + arena.aaron.getAttack() + "<br>";
+                _stat1 += "DF: " + arena.aaron.getDefense() + "<br>";
+                
+                var _stat2 = "HP: " + arena.das.getHealth() + "<br>";
+                _stat2 += "AT: " + arena.das.getAttack() + "<br>";
+                _stat2 += "DF: " + arena.das.getDefense() + "<br>";
+                
+                $('#player1stat').html(_stat1);
+                $('#player2stat').html(_stat2);
+            })
+            
+            $('#action').click(function() {
+                var _arena = new Arena();
+                _arena.duel(_arena.aaron, _arena.das);
+                $('#combat').html(_arena.msg);
+            })
+        </script>
+    </body>
+</html>
