@@ -1,10 +1,11 @@
-<html>
-<head>
-<meta charset="utf-8" />
+
+<!-- saved from url=(0034)https://emalron.github.io/rpg.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>텍스트 RPG</title>
 </head>
 <body>
-<div id='log'></div>
+<div id="log"></div>
 <script>
 function logMessage(msg, color) {
  if (!color) { color = 'black'; }
@@ -58,17 +59,23 @@ Hero.prototype.attack = function (target) {
 		this.xp += target.xp;
 		if (this.xp > 100 + 10*this.lev) {
 			this.lev++;
-			logMessage(this.name + '의 레벨이 상승했습니다. ' + this.name + '의 레벨은 ' + this.lev + '입니다.');
-			this.hp = 100 + this.lev * 10;
+			logMessage(this.name + '의 레벨이 상승했습니다. ' + this.name + '의 레벨은 ' + this.lev + '입니다.','red');
+			this.hp = 100 + this.lev * 20;
 			this.xp -= 100 + 10*this.lev;
+            this.att += 10;
 		}
+        
+        if (this.lev > 30) {
+            gameover = true;
+            logMessage(this.name + '이(가) 세상을 정복했습니다.', 'red');
+        }
 	}
 }
 
 function Monster(name, hp, att, lev, xp) {
 	Character.apply(this, arguments);
 	this.lev = lev || 1;
-	this.xp = lev || 10;
+	this.xp = xp || 10;
 }
 Monster.prototype = Object.create(Character.prototype);
 Monster.prototype.constructor = Monster;
@@ -86,7 +93,7 @@ function makeMonster() {
 	return new Monster(monster[0], monster[1], monster[2], monster[3], monster[4]);
 }
 
-var hero = new Hero(prompt('이름을 입력하세요'), 100, 10);
+var hero = new Hero('Hero', 100, 10);
 logMessage(hero.name + '의 모험이 시작됩니다.');
 while(!gameover) {
 	var monster = makeMonster();
@@ -101,5 +108,5 @@ while(!gameover) {
 }
 
 </script>
-</body>
-</html>
+
+</body></html>
