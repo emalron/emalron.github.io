@@ -57,6 +57,12 @@
                 world.player.setAttris('a', 10);
                 update(world);
             })
+            
+            $('#player1name').click(function() {
+                var newName = prompt('Do you wanna change your name?');
+                world.player.name = newName;
+                update(world);
+            })
         </script>
     </body>
 </html>
