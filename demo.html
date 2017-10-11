@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <!-- sematic ui script -->
+        <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+        <script
+          src="https://code.jquery.com/jquery-3.1.1.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+          crossorigin="anonymous"></script>
+        <script src="semantic/semantic.min.js"></script>
+        <script src="js/democracy.js"></script>
+        <!-- google chart -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+        </script>
+        <!-- my tools -->
+        <script type="text/javascript" src="js/mytools.js"></script>
+    </head>
+    <body>
+        <div class="ui grid container">
+            <div class="row">
+                <div class="column">
+                    <h1 class="ui header" id="tex1">Pickme sim</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column" style='width: 200px'>
+                    <h2 class ="ui header" id="player1name"></h2>
+                    <p id="player1stat"></p>
+                </div>
+                <div class="column" style='width: 200px'>
+                    <h2 class ="ui header" id="player2name"></h2>
+                    <p id="player2stat"></p>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='column'>
+                    <div class="ui button" name="action">Raise 1</div>
+                    <div class="ui button" name="action">Raise 2</div>
+                    <div class="ui button" name="action">Raise 3</div>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='column'>
+                    <div class="ui message" id="combat"></div>
+                </div>
+            </div>
+        </div>
+        <script>        
+            var world = new World();
+            
+            $(document).ready(
+                update(world)
+            )
+            
+            $(document.getElementsByName("action")[0]).click(function() {
+                world.player.setAttris('a', 10);
+                update(world);
+            })
+        </script>
+    </body>
+</html>
