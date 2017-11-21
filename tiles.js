@@ -37,6 +37,7 @@ window.onload = function() {
     // creation of the game itself
     game = new Phaser.Game(840, 600, Phaser.CANVAS, 'phaser-tiles', {preload: preload, create: create});
     document.addEventListener("keyup", keyb, false);
+    document.addEventListener("mousedown", mb, false);
 }
 
 function preload() {
@@ -71,11 +72,12 @@ function create() {
 
     
     sprite = game.add.sprite(16,16,'hero');
+    
+    var tutor = game.add.text(16*7+10,16,'arrow keys can move hero. right click to find the flag');
 
 }
 
 function keyb(e) {
-
     move(e);
     checker();
 }
@@ -128,8 +130,42 @@ function move(dir) {
         if(j != target.y ) {
             sprite.y = target.y*16;    
         }
-        
-        k=0;
-        l=0;
+        return true;
+    }
+    return false;
+}
+
+var jes = [
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0]
+];
+
+function find(i,j,g) {
+    jes[j][i] =1 ;
+    sprite.x = i*16;
+    sprite.y = j *16;
+    
+    if(omap[j][i] == g) {
+        console.log(jes);
+        return true;
+    }
+    else {
+        if(omap[j][i+1] != 1 && jes[j][i+1] == 0 && i < 6) find(i+1,j,g);
+        if(omap[j+1][i] != 1 && jes[j+1][i] == 0 && j < 6) find(i,j+1,g);
+        if(omap[j][i-1] != 1 && jes[j][i-1] == 0 && i > 0) find(i-1,j,g);
+        if(omap[j-1][i] != 1 && jes[j-1][i] == 0 && j > 0) find(i,j-1,g);
     }
 }
+
+function mb(e) {
+    if(e.which == 3) {
+        find(sprite.x/16,sprite.y/16,3);
+        checker();
+    }
+}
+
