@@ -9,7 +9,7 @@ var game;
         [1,1,1,1,1,1,1]
     ];
     
-    
+var goal = 0;
 var gameOptions = {
     // width of the game, in pixels
     gameWidth: 640,
@@ -76,7 +76,18 @@ function create() {
 
 function keyb(e) {
 
-        move(e);
+    move(e);
+    checker();
+}
+
+function checker() {
+    var i = sprite.x/16;
+    var j = sprite.y/16;
+    
+    if (omap[j][i] == 3  && goal == 0) {
+        alert('you did it.');
+        goal = 1;
+    }
 }
 
 function move(dir) {
