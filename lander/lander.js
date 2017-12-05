@@ -118,4 +118,9 @@ function update() {
         jet.body.y = player.body.y+37;
         jet.animations.play('turnon');
     }
+    
+    if (curState == 0) {
+        jet.frame = 0;
+        jet.animations.stop();
+    }
 }
