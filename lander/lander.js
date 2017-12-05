@@ -114,9 +114,15 @@ function update() {
     }
     
     if(curState > 0 && curState < 5) {
-        jet.body.x = player.body.x;
-        jet.body.y = player.body.y+37;
-        jet.animations.play('turnon');
+        if(fuel > 0) {
+            jet.body.x = player.body.x;
+            jet.body.y = player.body.y+37;
+            jet.animations.play('turnon');
+        }
+        else {
+            jet.frame = 0;
+            jet.animations.stop();
+        }
     }
     
     if (curState == 0) {
