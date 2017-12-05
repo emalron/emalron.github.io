@@ -64,11 +64,14 @@ function create() {
         console.log(event.keyCode);
         
         switch(event.keyCode) {
-            case 38:
+            case 38: // arrow up
+            case 75: // k
                 curState = state[curState][0];
                 break;
-            case 40:
+            case 40: // arrow down
+            case 74: // j
                 curState = state[curState][1];
+                break;
         }
     }
 }
