@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <!-- For KR lang -->
+        <meta charset="UTF-8" />
+        <!-- google chart -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+        </script>
+    </head>
+    <body>
+        <div id='title'>
+            <h1>경영 시뮬레이션</h1>
+            <p>
+                MBA 취득을 축하합니다. 도시 A에서 빛나는 커리어가 시작됩니다. 자그만한 공방을 도시 최고의 공장으로 만들어봅시다.
+            </p>
+        </div>
+        <div>
+            <h2>도시 A 는...</h2>
+            <div id='cityDescription'></div>
+        </div>
+        <div>
+            <h2>회사 a 는...</h2>
+            <div id='firmDescription'></div>
+        </div>
+        <div id='playerInput'>
+            <h2>의사 결정</h2>
+            <div id='price' align='center' style='float:left; width:10%'>$100</div>
+            <div style='float:left; width:90%'><form><input type='submit' value='+'> <input type='submit' value='-'></form></div>
+        </div>
+    </body>
+</html>
