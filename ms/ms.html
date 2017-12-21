@@ -7,26 +7,113 @@
         <script type="text/javascript">
             google.charts.load('current', {'packages':['corechart']});
         </script>
+        <script src=js/ms.js></script>
     </head>
-    <body>
-        <div id='title'>
-            <h1>경영 시뮬레이션</h1>
-            <p>
-                MBA 취득을 축하합니다. 도시 A에서 빛나는 커리어가 시작됩니다. 자그만한 공방을 도시 최고의 공장으로 만들어봅시다.
-            </p>
-        </div>
-        <div>
-            <h2>도시 A 는...</h2>
-            <div id='cityDescription'></div>
-        </div>
-        <div>
-            <h2>회사 a 는...</h2>
-            <div id='firmDescription'></div>
-        </div>
-        <div id='playerInput'>
-            <h2>의사 결정</h2>
-            <div id='price' align='center' style='float:left; width:10%'>$100</div>
-            <div style='float:left; width:90%'><form><input type='submit' value='+'> <input type='submit' value='-'></form></div>
-        </div>
+    <body onresize="responsive()">
+        <table id='displayer' border=1 style='width:50%'>
+            <tr id='titleTable'>
+                <td colspan=4>
+                    <h1>경영 시뮬레이션</h1>
+                    
+                    <p>제조사 A는 지난 5년간 시장에서 기술 선도를 위해 많은 투자와 노력을 해왔습니다. 5년의 집중적인 R&D 투자로 시장에서 기술적 우위를 가지고 있습니다. 이사회는 긴 인내의 보상을 바라고 있습니다. 2년 안에 시장의 승리자가 되십시오.</p>
+                </td>
+            </tr>
+            <tr id='cityTable'>
+                <td colspan=2>
+                    <p>도시 1은 국가에서 가장 큰 규모의 공업 단지를 가지고 있는 것으로 유명합니다. 호조인 글로벌 경제의 영향으로 도시 1의 경기도 좋습니다.</p>
+                    <p>마케팅 팀의 전언: 이 도시에서 제품 a는 보통 $<span id='stdPrice'>100</span>에 팔린다고 합니다.</p>
+                </td>
+                <td colspan="2">
+                    인구 <span id='population'>100만</span><br>
+                    경기지수 <span id='eCondition'>100</span>
+                </td>
+            </tr>
+            <tr id='firmTable'>
+                <td id='yourfirm' colspan="2">
+                    <p>우리 기업은 ...</p>
+                    <p>
+                    자본금 $<span id='yourCapital'>100</span><br>
+                    수익 <span id='yourEarning'>50</span><br>
+                    지출 <span id='yourSpending'>5</span>
+                    </p>
+                </td>
+                <td id='localfirm' colspan="2">
+                    <p>로컬 기업은 ...</p>
+                    <p>
+                    <br><br><br>
+                    </p>
+                </td>
+            </tr>
+            <tr id='productTable'>
+                <td id='yourProduct' colspan="2">
+                    <p>우리 제품은 ...</p>
+                    <p>
+                        가격 $<span id='yourPrice'>100</span>
+                        품질 <span id='yourQuality'>50</span>
+                        브랜드 <span id='yourBrand'>5</span>
+                        
+                        총점 <span id='yourOverall'></span>
+                    </p>
+                </td>
+                <td id='localProduct' colspan="2">
+                    <p>로컬 제품은 ...</p>
+                    <p>
+                        가격 $<span id='localPrice'>100</span>
+                        품질 <span id='localQuality'>50</span>
+                        브랜드 <span id='localBrand'>5</span>
+                        
+                        총점 <span id='localOverall'></span>
+                    </p>
+                </td>
+            </tr>
+            <tr id='chartTable'>
+                <td id='barChart' colspan=2></td>
+                <td id='pieChart' colspan="2"></td>
+            </tr>
+            <tr name='inputTable'>
+                <td style='width:25%' align='center'>Price</td>
+                <td id='value' style='width:25%' align='center'>###</td>
+                <td align='center' style='width:25%'><input type='submit' value='+' onclick='onInput(this)'> <input type='submit' value='-'></td>
+                <td id='expected'></td>
+            </tr>
+            <tr name='inputTable'>
+                <td align='center'>Price</td>
+                <td align='center'>###</td>
+                <td align='center' style='width:25%'><input type='submit' value='+' onclick='onInput(this)'> <input type='submit' value='-'></td>
+                <td id='expected'></td>
+            </tr>
+            <tr name='inputTable'>
+                <td align='center'>Price</td>
+                <td align='center'>###</td>
+                <td align='center' style='width:25%'><input type='submit' value='+' onclick='onInput(this)'> <input type='submit' value='-'></td>
+                <td id='expected'></td>
+            </tr>
+            <tr id='decisionTable'>
+                <td align='center' colspan="4"><input type='submit' value='실행'></td>
+            </tr>
+        </table>
+        
+        <!-- test 용 -->
+        <script>
+            function onInput(e) {
+                var elem = document.getElementsByName('inputTable');
+                
+                var years = document.getElementById('year')
+                
+                years.innerHTML = 7;
+                years.style.color = 'red';
+                
+                console.log(elem[0].firstElementChild.nextElementSibling.innerHTML);
+            }
+            
+            function responsive() {
+                if (window.innerWidth < 1000) {
+                    document.getElementById('displayer').style.width = '100%';
+                }
+                else {
+                    document.getElementById('displayer').style.width = '50%';
+                }
+            }
+        </script>
     </body>
 </html>
