@@ -1,9 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Apr 11 16:25:43 2018
-
 @author: 9010553
 """
+class Battlefield:
+    def __init__(self, ateam, bteam):
+        self.sides = []
+
+        for unit in ateam:
+            self.sides.append(unit)
+            unit.sideID = 0
+            unit.field = self
+        for unit in bteam:
+            self.sides.append(unit)
+            unit.sideID = 1
+            unit.field = self
+            
 class Object:
     def __init__(self, name, fighter, ai):
         self.name = name
@@ -34,24 +46,22 @@ class Fighter:
             print(self.owner.name + ' has ' + str(self.curHP) + ' hit points!')
             
 class Basic:
+    def __init__(self):
+        self.enemies = []
+    
     def search(self):
         for unit in self.owner.field.sides:
             if unit.sideID != self.owner.sideID:
                 print(self.owner.name + ' deteced ' + unit.name)
-                self.owner.enemies.append(unit)
+                self.enemies.append(unit)
 
-class Battlefield:
-    def __init__(self, ateam, bteam):
-        self.sides = []
+        self.enemies = sorted(self.enemies, key=lambda x:float(x.fighter.power)/float(x.fighter.curHP) if x.fighter.curHP > 0 else 0, reverse=True)
+        
+    def take_turn(self):
+        self.search()
+        self.owner.fighter.attack(self.enemies[0])
 
-        for unit in ateam:
-            self.sides.append(unit)
-            unit.sideID = 0
-            unit.field = self
-        for unit in bteam:
-            self.sides.append(unit)
-            unit.sideID = 1
-            unit.field = self
+
         
 hum_fighter = Fighter(hp=10, atk=2, defs=0)
 orc_fighter = Fighter(hp=9, atk=3, defs=0)
@@ -66,5 +76,4 @@ bteam = [orc]
 
 bf = Battlefield(ateam, bteam)
 for unit in bf.sides:
-    unit.ai.search()
-    print('\n')
+    unit.ai.take_turn()
