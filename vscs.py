@@ -16,16 +16,32 @@ class Battlefield:
             unit.sideID = 1
             unit.field = self
             
+    def collision(self):
+        for unit in self.sides:
+            unit.managerAI()
+            
+    def update(self):
+        for unit in self.sides:
+            unit.roleList[0].take_damage()
+            
 class Object:
-    def __init__(self, name, fighter, ai):
+    def __init__(self, name):
         self.name = name
-        self.fighter = fighter
-        if self.fighter:
-            self.fighter.owner = self
-        self.ai = ai
-        if self.ai:
-            self.ai.owner = self
         self.enemies = []
+        self.aiList = []
+        self.roleList = []
+        
+    def addRole(self,role):
+        self.roleList.append(role)
+        role.owner = self
+        
+    def addAI(self,ai):
+        self.aiList.append(ai)
+        ai.owner = self
+        
+    def managerAI(self):
+        if self.aiList:
+            self.aiList[0].do()
 
 class Fighter:
     def __init__(self, hp, atk, defs):
@@ -33,20 +49,23 @@ class Fighter:
         self.curHP = hp
         self.power = atk
         self.defense = defs
+        self.damTaken = 0
         
     def attack(self, target):
-        damage_ = self.power - target.fighter.defense
+        damage_ = self.power - target.roleList[0].defense
         if damage_ > 0:
             print(self.owner.name + ' attacked ' + target.name + ' for ' + str(damage_))
-            target.fighter.take_damage(damage_)
+            target.roleList[0].damTaken += damage_
             
-    def take_damage(self, damage):
-        if damage > 0:
-            self.curHP -= damage
-            print(self.owner.name + ' has ' + str(self.curHP) + ' hit points!')
+    def take_damage(self):
+        if self.damTaken > 0:
+            self.curHP -= self.damTaken
+            print(self.owner.name + ' left ' + str(self.curHP) + '(-' + str(self.damTaken) + ') hit points!')
+            self.damTaken = 0
             
 class Basic:
     def __init__(self):
+        self.state = []
         self.enemies = []
     
     def search(self):
@@ -55,25 +74,32 @@ class Basic:
                 print(self.owner.name + ' deteced ' + unit.name)
                 self.enemies.append(unit)
 
-        self.enemies = sorted(self.enemies, key=lambda x:float(x.fighter.power)/float(x.fighter.curHP) if x.fighter.curHP > 0 else 0, reverse=True)
+        self.enemies = sorted(self.enemies, key=lambda x:float(x.roleList[0].power)/float(x.roleList[0].curHP) if x.roleList[0].curHP > 0 else 0, reverse=True)
         
-    def take_turn(self):
+    def do(self):
         self.search()
-        self.owner.fighter.attack(self.enemies[0])
-
+        if self.enemies :
+            self.owner.roleList[0].attack(self.enemies[0])
 
         
-hum_fighter = Fighter(hp=10, atk=2, defs=0)
-orc_fighter = Fighter(hp=9, atk=3, defs=0)
-trl_fighter = Fighter(hp=11, atk=4, defs=0)
 
-human = Object(name="human", fighter=hum_fighter, ai=Basic())
-orc = Object(name="orc", fighter=orc_fighter, ai=Basic())
-troll = Object(name='troll', fighter=trl_fighter, ai=Basic())
+
+human = Object(name="human")
+orc = Object(name="orc")
+troll = Object(name='troll')
+
+human.addRole(Fighter(hp=10, atk=2, defs=0))
+orc.addRole(Fighter(hp=9, atk=3, defs=0))
+troll.addRole(Fighter(hp=11, atk=4, defs=0))
+
+human.addAI(Basic())
+orc.addAI(Basic())
+troll.addAI(Basic())
 
 ateam = [human, troll]
 bteam = [orc]
 
 bf = Battlefield(ateam, bteam)
-for unit in bf.sides:
-    unit.ai.take_turn()
+
+bf.collision()
+bf.update()
