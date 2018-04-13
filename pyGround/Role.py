@@ -13,6 +13,12 @@ class Fighter:
         self.defense = defs
         self.damTaken = 0
         self.prevDamTaken = 0
+        self.state = 0
+        self.automata = [
+                        [1, 0, 2],
+                        [1, 0, 2],
+                        [2, 2, 2]
+                        ]
         
     def attack(self, target):
         damage_ = self.power - target.roleList[0].defense
@@ -21,8 +27,11 @@ class Fighter:
             target.roleList[0].damTaken += damage_
             
     def update(self):
-        if self.damTaken > 0:
-            self.curHP -= self.damTaken
-            print(self.owner.name + ' left ' + str(self.curHP) + '(-' + str(self.damTaken) + ') hit points!')
-            self.prevDamTaken = self.damTaken
-            self.damTaken = 0
+        if self.state != 2:
+            if self.damTaken > 0:
+                self.curHP -= self.damTaken
+                print(self.owner.name + ' left ' + str(self.curHP) + '(-' + str(self.damTaken) + ') hit points!')
+                self.prevDamTaken = self.damTaken
+                self.damTaken = 0
+        else:
+            print(self.owner.name + ' is dead.')

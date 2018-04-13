@@ -8,24 +8,43 @@ import Battlefield as field
 import Actor as actors
 import Advisor as advisors
 import Role as roles
+import matplotlib.pyplot as plt
+import math
 
-human = actors.Object(name="human")
-orc = actors.Object(name="orc")
-troll = actors.Object(name='troll')
+ateam = []
+bteam = []
 
-human.addRole(roles.Fighter(hp=10, atk=2, defs=0))
-orc.addRole(roles.Fighter(hp=9, atk=3, defs=0))
-troll.addRole(roles.Fighter(hp=11, atk=4, defs=0))
+numA = 5
+numB = 3
 
-human.addAI(advisors.Basic())
-orc.addAI(advisors.Basic())
-troll.addAI(advisors.Basic())
+for i in range(numA):
+    ateam.append(actors.Object(name="Reds " + str(i)))
+    
+for i in range(numB):
+    bteam.append(actors.Object(name="Blues " + str(i)))
 
-ateam = [human, troll]
-bteam = [orc]
+
+for human in ateam:
+    human.addRole(roles.Fighter(hp=5, atk=1, defs=0))
+    human.addAI(advisors.Basic())
+    
+for human in bteam:
+    human.addRole(roles.Fighter(hp=5, atk=1, defs=0))
+    human.addAI(advisors.Basic())
 
 bf = field.Battlefield(ateam, bteam)
 
-for i in range(3):
+for i in range(100):
+    bf.history()
+    bf.precollision()
     bf.collision()
     bf.update()
+    
+rp = plt.plot(bf.histA,'r')
+bp = plt.plot(bf.histB,'b')
+plt.legend(['Red: '+str(numA), 'Blue: '+str(numB)])
+plt.show()
+print('A result: ' + str(bf.histA[-1]))
+print('B result: ' + str(bf.histB[-1]))
+
+print('Lanc.: ' + str(math.sqrt(numA**2-numB**2)))
