@@ -46,7 +46,10 @@ class Basic:
         if state != 2:
             self.search()
             if self.enemies :
-                self.owner.roleList[0].attack(self.enemies[0])
+                for enemy in self.enemies:
+                    if enemy.roleList[0].curHP > enemy.roleList[0].damTaken:
+                        self.owner.roleList[0].attack(enemy)
+                        break
                 
 #        elif state == 1:
 #            print('Adios, dude!')
