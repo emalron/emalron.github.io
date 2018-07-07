@@ -1,0 +1,197 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<style type="text/css">
+			canvas {
+				width: 100%;
+			}
+			body {
+				padding: 0;
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas width="640" height="360" id="myCanvas"></canvas>
+		<script type="text/javascript">
+			window.addEventListener('load', function() {
+				var gameWidth = 640
+				var gameHeight = 360
+				var canvas = document.getElementById("myCanvas");
+				var ctx = canvas.getContext("2d");
+
+				var gameLive = true;
+
+				var movePlayer = function() {
+					player.isMoving = true;
+				}
+				var stopPlayer = function() {
+					player.isMoving = false;
+				}
+
+				canvas.addEventListener("mousedown", movePlayer);
+				canvas.addEventListener("mouseup", stopPlayer);
+				canvas.addEventListener("touchstart", movePlayer);
+				canvas.addEventListener("touchend", stopPlayer);
+
+				var load = function() {
+					// sprites.player = new Image();
+					// sprites.player.src = 'images/hero.png';
+
+					// sprites.background = new Image();
+					// sprites.background.src = 'images/floor.png';
+
+					// sprites.enemy = new Image();
+					// sprites.enemy.src = 'images/enemy.png';
+
+					// sprites.chest = new Image();
+					// sprites.chest.src = 'images/chest.png';
+				};
+
+				var enemies =[
+				{
+					x: 100,
+					y: 100,
+					speed: 1,
+					w: 40,
+					h: 40
+				},
+				{
+					x: 180,
+					y: 100,
+					speed: -1,
+					w: 40,
+					h: 40
+				},
+				{
+					x: 250,
+					y: 100,
+					speed: 2,
+					w: 40,
+					h: 40
+				},
+				{
+					x: 320,
+					y: 100,
+					speed: -2,
+					w: 40,
+					h: 40
+				},
+				];
+
+				var player = {
+					x: 10,
+					y: 100,
+					speedX: 2,
+					w: 40,
+					h: 40,
+					isMoving: false
+				}
+
+				var goal = {
+					x: 580,
+					y: 100,
+					w: 50,
+					h: 36,
+					color: 'gold'
+				}
+
+				var sprites = {};
+				var level = 1;
+
+				var update = function() {
+					if(player.isMoving) {
+						player.x += player.speedX;
+					}
+
+					if(checkCollision(player,goal)) {
+						player.x = 10;
+						level++;
+
+						enemies.forEach(function(e) {
+							let sign = e.speed / Math.abs(e.speed);
+							e.speed += sign;
+							e.x += 10;
+							player.speed++;
+						})
+					}
+
+					enemies.forEach(function(enemy, i) {
+						var hitBot = enemy.y >= gameHeight - enemy.h;
+						var hitTop = enemy.y <= 0;
+
+						if(checkCollision(player, enemy)) {
+							gameLive = false;
+						}
+
+						if (hitBot) {
+							enemy.y = gameHeight-enemy.h;
+							enemy.speed = -enemy.speed;
+						}
+						else if(hitTop) {
+							enemy.y = 0;
+							enemy.speed = -enemy.speed;
+						}
+
+						enemy.y = enemy.y + enemy.speed;
+					});
+				}
+
+				var draw = function() {
+					ctx.clearRect(0,0,gameWidth,gameHeight);
+
+					// // draw background
+					// ctx.drawImage(sprites.background, 0, 0);
+
+					// // draw player
+					// ctx.drawImage(sprites.player, player.x, player.y);
+
+					// // draw goal
+					// ctx.drawImage(sprites.chest, goal.x, goal.y);
+
+					// // draw enemies
+					// enemies.forEach(function(e) {
+					// 	ctx.drawImage(sprites.enemy, e.x, e.y);
+					// })
+					ctx.fillStyle = goal.color;
+					ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
+					// console.log(goal.x + ' ' + goal.y)
+
+					ctx.fillStyle = 'green';
+					ctx.fillRect(player.x, player.y, player.w, player.h);
+
+					enemies.forEach(function(enemy,i) {
+						ctx.fillStyle = 'blue';
+						ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+					});
+
+					ctx.font = "14px Calibri";
+					ctx.fillStyle = "black"
+					ctx.fillText(level, goal.x+goal.w/2-10, goal.y+goal.h/2);
+
+					ctx.font = "14px Calibri";
+					ctx.fillText('Gold Here', goal.x, goal.y-10);
+				}
+
+				var checkCollision = function (r1, r2) {
+					let closeOnWidth = Math.abs((r1.x + r1.w/2) - (r2.x+r2.w/2)) <= (r1.w+r2.w)/2;
+					let closeOnHeight = Math.abs((r1.y+r1.h/2) - (r2.y+r2.h/2)) <= (r1.h+r2.h)/2;
+
+					return closeOnHeight && closeOnWidth;
+				}
+
+				var step = function() {
+					update();
+					draw();
+
+					if(gameLive) {
+						window.requestAnimationFrame(step);
+					}
+				}
+
+				load();
+				step();
+			});
+		</script>
+	</body>
+</html>
