@@ -1,7 +1,8 @@
 var FORM = {
     HUMAN: 0,
     ELF: 1,
-    ORC: 2
+    ORC: 2,
+    DEMON: 3
 }
 
 var LOAD = {
@@ -21,22 +22,21 @@ function Character(name, ac) {
     this.isPolymorphed = false;
     this.isTrapped = false;
     this.hitDice = 0;
+    this.name = name;
     
     this.equipments = {
-        head: {},
-        body: {},
-        robe: {},
-        globe: {},
-        boots: {},
-        primary: {},
-        secondary: {},
+        armor: {},
+        primary: {name: "sword", enchant: 1, smallToHit: 1, largeToHit: 2, blessed: true},
         ring1: {acc: 0, dam: 0},
         ring2: {acc: 0, dam: 0},
-        amulet: {}
     }
     
     this.form = FORM.HUMAN;
+    this.live = 1;
+    
     this.loadState = LOAD.NORMAL;
+    
+    this.skill = 0;
 }
 
 Character.prototype.getToHIT = function(target) {
@@ -111,6 +111,38 @@ Character.prototype.getToHIT = function(target) {
     // ADD ADVANTAGE FOR STUNNED MONSTERS LATER +2
     // ADD ADVANTAGE FOR FLEEING MONSTER LATER +2
     // ADD PENALTY FOR MONK WEARING BODY ARMOR LATER -20
+    
+    // Calculation out of WEAPONS
+    // from enchantment
+    output += this.equipments.primary.enchant || 0;
+    console.log('This weapon enchantment: ' + this.equipments.primary.enchant);
+    
+    // target type's to-hit bonus out of weapons
+    if (target.size == SIZE.SMALL) {
+        output += this.equipments.primary.smallToHit || 0;
+        console.log('Target is small: ' + this.equipments.primary.smallToHit);
+    } else {
+        output += this.equipments.primary.largeToHit || 0;
+        console.log('Target is large: ' + this.equipments.primary.largeToHit);
+    }
+    
+    // weapon skill, this time only sword skill
+    output += this.skill;
+    
+    // ADD PENALTY FOR TWO-WEAPON STYLE AND/OR RIDING WHILE POORLY SKILL
+    // ADD ADDITIONAL PENALTY FOR TWO-WEAPON WHILE RIDING REGARDLESS OF SKILL
+    
+    // advantage for blessed weapons against a demon or an undead
+    if((target.form == FORM.DEMON || target.live == 0) && this.equipments.primary.blessed) {
+        output += 2;
+        console.log('blessed weapon against a demon or an undead');
+    }
+    
+    // +2 for weapons in spear class against X, D, J, N, H
+    // +2 for a trident against snakes or sea monsters out of water.
+    // +4 for a trident against any swimmer in water.
+    // +2 for weapon in pick-axe class against xorn or earth elemental
+    // An artifact +HIT bonus if any applies.
     
     return output;
 }

@@ -1,4 +1,7 @@
-
+var SIZE = {
+    SMALL: 0,
+    LARGE: 1
+}
 
 function Monster(name, exp, ac) {
     this.ac = ac || 10;
@@ -11,8 +14,22 @@ function Monster(name, exp, ac) {
         "fleeing": 0,
         "trapped": 0
     }
+    this.exp = exp;
+    
+    this.equipments = {
+        armor: {},
+        primary: {},
+        ring1: {},
+        ring2: {},
+    }
+    
+    this.name = name;
     
     this.form = this.setForm(name);
+    
+    this.size = SIZE.SMALL;
+    
+    this.live = 0;
 }
 
 Monster.prototype.setForm = function(type) {
