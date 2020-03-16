@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>js-dos 6.22</title>
+  <script src="js/js-dos.js"></script>
+  <style>
+    canvas {
+      width: 640px;
+    }
+    h1 {
+        text-align: center;
+    }
+    #desc {
+        width: 640px;
+        margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+    <div><h1>톰과 제리 게임</h1></div>
+    <div>
+        <canvas id="jsdos"></canvas>
+    </div>
+    <div id="desc">
+        <p>조작법</p>
+        <p>이동: 방향키</p>
+        <p>짬푸: Shift, Ctrl</p>
+        <p>공격: z, Alt</p>
+    </div>
+  <script>
+            Dos(document.getElementById("jsdos")).ready((fs, main) => {
+                fs.extract("https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=1BaMqdybA44wwzjr6h2S2m7Pe47Redtr2").then(() => {
+                    main(["-c", "TOM.EXE"])
+                });
+            });
+  </script>
+</body>
+
+</html>
