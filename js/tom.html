@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>js-dos 6.22</title>
+  <script src="js-dos.js"></script>
+  <style>
+    canvas {
+      width: 640px;
+    }
+    h1 {
+        text-align: center;
+    }
+    #desc {
+        width: 640px;
+        margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+    <div><h1>고인돌 택시</h1></div>
+    <div>
+        <canvas id="jsdos"></canvas>
+    </div>
+    <div id="desc">
+        <p>조작법</p>
+        <p>이동: 방향키</p>
+        <p>짬푸: Shift, Ctrl</p>
+        <p>공격: z, Alt</p>
+    </div>
+  <script>
+            Dos(document.getElementById("jsdos")).ready((fs, main) => {
+                fs.extract("http://api.emalron.com:8002").then(() => {
+                    main(["-c", "UGH.EXE"])
+                });
+            });
+  </script>
+</body>
+
+</html>
