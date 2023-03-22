@@ -31,7 +31,7 @@ function setCard() {
 
 function check() {
     let {cardNumber} = gameValue;
-    if(cardNumber === (max.toString(2).length)) {
+    if(cardNumber === (max.toString(2).length-1)) {
         alert(`생각하신 숫자는 ${result} 입니다.`);
         game.cardNumber = 0;
         result = 0;
