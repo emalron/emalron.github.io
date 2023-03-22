@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Numbers</title>
+        <link rel="stylesheet" href="style.css" />
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <div class="container">
+            <h2>1~100 중 아무 숫자나 생각해보세요</h2>
+            <div class="card">
+                <div id="title">
+                    <p>Card # <span id="title-number"></span></p>
+                </div>
+                <div id="numbers"></div>
+                <div>
+                    <p>생각하신 숫자가 있습니까?</p>
+                    <div style="float:right;">
+                        <button class="yes" onclick="submit('yes')">네</button> <button class="no" onclick="submit('no')">아니오</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="card.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </body>
+</html>
