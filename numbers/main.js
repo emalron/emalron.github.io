@@ -33,7 +33,7 @@ function check() {
     let {cardNumber} = gameValue;
     if(cardNumber === (max.toString(2).length)) {
         alert(`생각하신 숫자는 ${result} 입니다.`);
-        cardNumber = 0;
+        game.cardNumber = 0;
         result = 0;
     }
 }
