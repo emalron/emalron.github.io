@@ -7,10 +7,8 @@ const cards = [];
 let game = new Proxy(gameValue, {
     set: (target, key, value) => {
         target[key] = value;
-        if(value < cards.length) {
-            check();
-            setCard();
-        }
+        check();
+        setCard();
     }
 })
 
