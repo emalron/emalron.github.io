@@ -13,7 +13,7 @@ let game = new Proxy(gameValue, {
 })
 
 function init() {
-    for(let i=1; i<max.toString(2).length; i++) {
+    for(let i=1; i<=max.toString(2).length; i++) {
         let c_ = new Card(i);
         cards.push(c_);
     }
